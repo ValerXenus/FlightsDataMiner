@@ -1,4 +1,6 @@
 ﻿using System;
+using FlightsDataMiner.Data;
+using FlightsDataMiner.Logic;
 
 namespace FlightsDataMiner
 {
@@ -6,7 +8,11 @@ namespace FlightsDataMiner
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var dataAccess = new DataAccess();
+            var html = dataAccess.GetDashboardHtml();
+            var parser = new HtmlParser(html);
+            parser.GetDepartureFlights();
+
             Console.ReadKey();
         }
     }
