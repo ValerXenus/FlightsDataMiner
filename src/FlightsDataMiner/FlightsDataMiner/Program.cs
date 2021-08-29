@@ -11,7 +11,8 @@ namespace FlightsDataMiner
             var dataAccess = new DataAccess();
             var html = dataAccess.GetDashboardHtml();
             var parser = new HtmlParser(html);
-            parser.GetDepartureFlights();
+            var departures = parser.GetDepartureFlights();
+            var arrivals = parser.GetArrivalFlights();
 
             Console.ReadKey();
         }

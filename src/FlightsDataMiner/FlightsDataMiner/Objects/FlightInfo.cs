@@ -42,5 +42,16 @@ namespace FlightsDataMiner.Objects
         /// Дата и время (вылета/прибытия) реальное
         /// </summary>
         public DateTime ActualDateTime { get; set; }
+
+        /// <summary>
+        /// Проверка на заполненность всех данных
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckDataValid()
+        {
+            return ScheduledDateTime != DateTime.MinValue && ActualDateTime != DateTime.MinValue &&
+                   !string.IsNullOrEmpty(FlightNumber) && !string.IsNullOrEmpty(Destination) &&
+                   Airline != Airlines.None && PlaneType != PlaneTypes.None;
+        }
     }
 }

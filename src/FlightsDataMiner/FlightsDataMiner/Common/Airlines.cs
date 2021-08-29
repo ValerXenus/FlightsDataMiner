@@ -7,8 +7,8 @@ namespace FlightsDataMiner.Common
     /// </summary>
     public enum Airlines
     {
-        [Description("РЕД ВИНГС")]
-        RedWings = 0,
+        [Description("Неизвестный")]
+        None = 0,
         [Description("ПАО АЭРОФЛОТ")]
         Aeroflot = 1,
         [Description("ПОБЕДА")]
@@ -51,5 +51,7 @@ namespace FlightsDataMiner.Common
         TurkishAirlines = 20,
         [Description("ЯМАЛ")]
         Yamal = 21,
+        [Description("РЕД ВИНГС")]
+        RedWings = 22,
     }
 }

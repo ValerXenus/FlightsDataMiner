@@ -1,89 +1,111 @@
-﻿namespace FlightsDataMiner.Common
+﻿using System.ComponentModel;
+
+namespace FlightsDataMiner.Common
 {
     /// <summary>
     /// Типы самолетов
     /// </summary>
     public enum PlaneTypes
     {
+        [Description("Неизвестный")]
+        None = 0,
         /// <summary>
         /// Airbus A319
         /// </summary>
-        A319 = 0,
+        [Description("A319")]
+        A319 = 1,
         /// <summary>
         /// Airbus A320
         /// </summary>
-        A320 = 1,
+        [Description("A320")]
+        A320 = 2,
         /// <summary>
         /// Airbus A321
         /// </summary>
-        A321 = 2,
+        [Description("A321")]
+        A321 = 3,
         /// <summary>
         /// Airbus A330-200
         /// </summary>
-        A332 = 3,
+        [Description("A332")] 
+        A332 = 4,
 
         /// <summary>
         /// АН-26
         /// </summary>
-        AN26 = 4,
+        [Description("AN26")] 
+        AN26 = 5,
 
         /// <summary>
         /// ATR-72
         /// </summary>
-        AT72 = 5,
+        [Description("AT72")] 
+        AT72 = 6,
         /// <summary>
         /// ATR-75
         /// </summary>
-        AT75 = 6,
+        [Description("AT75")] 
+        AT75 = 7,
 
         /// <summary>
         /// Boeing 737-500
         /// </summary>
-        B735 = 7,
+        [Description("B735")] 
+        B735 = 8,
         /// <summary>
         /// Boeing 737-800
         /// </summary>
-        B738 = 8,
+        [Description("B738")] 
+        B738 = 9,
         /// <summary>
         /// Boeing 757-200
         /// </summary>
-        B752 = 9,
+        [Description("B752")] 
+        B752 = 10,
         /// <summary>
         /// Boeing 767-300
         /// </summary>
-        B763 = 10,
-        
+        [Description("B763")] 
+        B763 = 11,
+
         /// <summary>
         /// Bombardier CRJ-100
         /// </summary>
-        CRJ1 = 11,
+        [Description("CRJ1")] 
+        CRJ1 = 12,
         /// <summary>
         /// Bombardier CRJ-200
         /// </summary>
-        CRJ2 = 12,
+        [Description("CRJ2")] 
+        CRJ2 = 13,
 
         /// <summary>
         /// Embraer E170
         /// </summary>
-        E170 = 13,
+        [Description("E170")] 
+        E170 = 14,
         /// <summary>
         /// Embraer E190
         /// </summary>
-        E190 = 14,
+        [Description("E190")] 
+        E190 = 15,
 
         /// <summary>
         /// L-410
         /// </summary>
-        L410 = 15,
+        [Description("L410")] 
+        L410 = 16,
 
         /// <summary>
         /// Sukhoi Superjet 100-95
         /// </summary>
-        SU95 = 16,
+        [Description("SU95")] 
+        SU95 = 17,
 
         /// <summary>
         /// ЯК-42
         /// </summary>
-        YK42 = 17,
+        [Description("YK42")] 
+        YK42 = 18,
     }
 }
