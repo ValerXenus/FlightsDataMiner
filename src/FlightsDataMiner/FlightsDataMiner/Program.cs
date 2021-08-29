@@ -1,6 +1,7 @@
 ﻿using System;
 using FlightsDataMiner.Data;
 using FlightsDataMiner.Logic;
+using FlightsDataMiner.Logic.Logging;
 
 namespace FlightsDataMiner
 {
@@ -14,6 +15,9 @@ namespace FlightsDataMiner
             var departures = parser.GetDepartureFlights();
             var arrivals = parser.GetArrivalFlights();
 
+            Logging.Unload();
+
+            Console.WriteLine("Данные получены и сохранены");
             Console.ReadKey();
         }
     }

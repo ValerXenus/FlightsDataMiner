@@ -47,7 +47,7 @@ namespace FlightsDataMiner.Logic
                 PlaneType = parsePlaneType(node),
                 Destination = parseDestination(node),
                 ScheduledDateTime = parseScheduledDateTime(node, direction),
-                ActualDateTime = parseActualDateTime(node, direction)
+                ActualDateTime = parseActualDateTime(node)
             };
 
             return outcome.CheckDataValid() ? outcome : null;
@@ -173,9 +173,8 @@ namespace FlightsDataMiner.Logic
         /// Парсинг даты и времени (вылета/прибытия) реального
         /// </summary>
         /// <param name="node">HTML-узел рейса</param>
-        /// <param name="direction">Направление</param>
         /// <returns></returns>
-        private DateTime parseActualDateTime(HtmlNode node, DirectionType direction)
+        private DateTime parseActualDateTime(HtmlNode node)
         {
             var time = node.SelectSingleNode(StringConstants.ActualTimeXPath).InnerText;
             return string.IsNullOrEmpty(time)
