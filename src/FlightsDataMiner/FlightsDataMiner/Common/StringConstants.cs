@@ -11,6 +11,16 @@
         public static string FlightsDashboardUrl = "http://kazan.aero/for-passengers-and-guests/on-line-schedule/";
 
         /// <summary>
+        /// Ссылка на файл вылетающих рейсов
+        /// </summary>
+        public static string DeparturesFile = "DataSet\\Departures.txt";
+
+        /// <summary>
+        /// Ссылка на файл прибывающих рейсов
+        /// </summary>
+        public static string ArrivalsFile = "DataSet\\Arrivals.txt";
+
+        /// <summary>
         /// XPath до элементов таблицы "Вылет"
         /// </summary>
         public static string DepartureFlightsXPath =
