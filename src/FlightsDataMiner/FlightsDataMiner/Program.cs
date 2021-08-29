@@ -10,14 +10,19 @@ namespace FlightsDataMiner
         static void Main(string[] args)
         {
             Console.WriteLine("Mining data. Please wait...");
-            Logging.Instance().LogNotification("[Запуск сборщика данных]");
-            var dataAccess = new DataAccess();
-            var html = dataAccess.GetDashboardHtml();
-            var parser = new HtmlParser(html);
-            var departures = parser.GetDepartureFlights();
-            var arrivals = parser.GetArrivalFlights();
 
-            var fileWriter = new DataFileWriter(departures, arrivals);
+            Logging.Instance().LogNotification("[Запуск сборщика данных]");
+            var dataAccess = new FlightsDataAccess();
+            var html = dataAccess.GetDashboardHtml();
+            var htmlParser = new HtmlParser(html);
+
+            var metarAccess = new MetarDataAccess();
+            var metarData = metarAccess.GetMetarData();
+
+            var departures = htmlParser.GetDepartureFlights();
+            var arrivals = htmlParser.GetArrivalFlights();
+
+            var fileWriter = new DataFileWriter(departures, arrivals, metarData);
             fileWriter.SaveDataSet();
 
             Logging.Instance().LogNotification("[Завершение работы сборщика данных]\n\n");

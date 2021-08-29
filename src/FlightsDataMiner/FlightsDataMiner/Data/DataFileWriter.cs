@@ -22,10 +22,16 @@ namespace FlightsDataMiner.Data
         /// </summary>
         private readonly List<FlightInfo> _arrivalFlights;
 
-        public DataFileWriter(List<FlightInfo> departureFlights, List<FlightInfo> arrivalFlights)
+        /// <summary>
+        /// Список погодных данных
+        /// </summary>
+        private readonly List<string> _rawMetars;
+
+        public DataFileWriter(List<FlightInfo> departureFlights, List<FlightInfo> arrivalFlights, List<string> rawMetars)
         {
             _departureFlights = departureFlights;
             _arrivalFlights = arrivalFlights;
+            _rawMetars = rawMetars;
         }
 
         /// <summary>
@@ -34,8 +40,9 @@ namespace FlightsDataMiner.Data
         public void SaveDataSet()
         {
             Logging.Instance().LogNotification("Запуск процесса сохранения данных");
-            saveDataFile(StringConstants.DeparturesFile, DirectionType.Departure);
-            saveDataFile(StringConstants.ArrivalsFile, DirectionType.Arrival);
+            saveFlightDataFile(StringConstants.DeparturesFile, DirectionType.Departure);
+            saveFlightDataFile(StringConstants.ArrivalsFile, DirectionType.Arrival);
+            saveMetarDataFile();
             Logging.Instance().LogNotification("Данные успешно сохранены");
         }
 
@@ -45,7 +52,7 @@ namespace FlightsDataMiner.Data
         /// </summary>
         /// <param name="filePath">Путь до файла</param>
         /// <param name="direction">Направление</param>
-        private void saveDataFile(string filePath, DirectionType direction)
+        private void saveFlightDataFile(string filePath, DirectionType direction)
         {
             var directory = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(directory))
@@ -76,6 +83,23 @@ namespace FlightsDataMiner.Data
                 flightInfo.Destination, "|", 
                 flightInfo.ScheduledDateTime.ToString("dd.MM.yyyy HH:mm:ss"), "|", 
                 flightInfo.ActualDateTime.ToString("dd.MM.yyyy HH:mm:ss"));
+        }
+
+        /// <summary>
+        /// Сохранение нераспарсенного METAR
+        /// ToDo: Реализовать парсер для будущего разбора датасета
+        /// </summary>
+        private void saveMetarDataFile()
+        {
+            var directory = Path.GetDirectoryName(StringConstants.MetarsFile);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            using var writer = new StreamWriter(StringConstants.MetarsFile, true);
+            foreach (var metar in _rawMetars)
+            {
+                writer.WriteLine(metar);
+            }
         }
     }
 }

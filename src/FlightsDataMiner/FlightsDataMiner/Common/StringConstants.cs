@@ -11,6 +11,11 @@
         public static string FlightsDashboardUrl = "http://kazan.aero/for-passengers-and-guests/on-line-schedule/";
 
         /// <summary>
+        /// Ссылка на данные METAR
+        /// </summary>
+        public static string MetarDataUrl = "https://api.met.no/weatherapi/tafmetar/1.0/metar.txt?date={request_date}&icao=UWKD";
+
+        /// <summary>
         /// Ссылка на файл вылетающих рейсов
         /// </summary>
         public static string DeparturesFile = "DataSet\\Departures.txt";
@@ -19,6 +24,11 @@
         /// Ссылка на файл прибывающих рейсов
         /// </summary>
         public static string ArrivalsFile = "DataSet\\Arrivals.txt";
+
+        /// <summary>
+        /// Ссылка на файла с погодными данными
+        /// </summary>
+        public static string MetarsFile = "DataSet\\RawMetars.txt";
 
         /// <summary>
         /// XPath до элементов таблицы "Вылет"
