@@ -28,7 +28,7 @@ namespace FlightsDataMiner.Data
             var outcome = "";
 
             Logging.Instance()
-                .LogNotification($"Отправка запроса на получение списка рейсов: {_requestUrl}");
+                .LogNotification($"Отправка запроса на получение данных: {_requestUrl}");
 
             var request = WebRequest.Create(_requestUrl);
             using var response = request.GetResponse();

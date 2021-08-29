@@ -22,6 +22,12 @@ namespace FlightsDataMiner
             var departures = htmlParser.GetDepartureFlights();
             var arrivals = htmlParser.GetArrivalFlights();
 
+            if (departures.Count == 0 || arrivals.Count == 0)
+            {
+                Logging.Instance().LogError("Данные о рейсах не удалось прочитать");
+                throw new Exception("Данные о рейсах не удалось прочитать");
+            }
+
             var fileWriter = new DataFileWriter(departures, arrivals, metarData);
             fileWriter.SaveDataSet();
 
