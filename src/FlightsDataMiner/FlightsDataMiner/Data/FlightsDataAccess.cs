@@ -1,4 +1,4 @@
-﻿using FlightsDataMiner.Common;
+﻿using FlightsDataMiner.Base.Common;
 using FlightsDataMiner.Logic.Logging;
 
 namespace FlightsDataMiner.Data

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FlightsDataMiner.Common;
+using FlightsDataMiner.Base.Common;
 using FlightsDataMiner.Logic.Logging;
 
 namespace FlightsDataMiner.Data
@@ -15,7 +15,8 @@ namespace FlightsDataMiner.Data
 
         public MetarDataAccess()
         {
-            var nowDateText = DateTime.Now.ToString("yyyy-MM-dd");
+            // Данные по Metar представляются по UTC
+            var nowDateText = DateTime.UtcNow.ToString("yyyy-MM-dd");
             _metarUrl = StringConstants.MetarDataUrl.Replace("{request_date}", nowDateText);
         }
 

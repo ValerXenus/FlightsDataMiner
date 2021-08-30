@@ -1,7 +1,7 @@
 ﻿using System;
-using FlightsDataMiner.Common;
+using FlightsDataMiner.Base.Common.Enums;
 
-namespace FlightsDataMiner.Objects
+namespace FlightsDataMiner.Base.Objects
 {
     /// <summary>
     /// Класс сведений о полете

@@ -1,4 +1,4 @@
-﻿namespace FlightsDataMiner.Common
+﻿namespace FlightsDataMiner.Base.Common.Enums
 {
     /// <summary>
     /// Тип полета

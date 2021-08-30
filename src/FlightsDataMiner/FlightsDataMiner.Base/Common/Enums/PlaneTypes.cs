@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FlightsDataMiner.Common
+namespace FlightsDataMiner.Base.Common.Enums
 {
     /// <summary>
     /// Типы самолетов

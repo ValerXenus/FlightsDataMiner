@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace FlightsDataMiner.Logic
+namespace FlightsDataMiner.Base.Helpers
 {
     /// <summary>
     /// Класс для работы с данными enum

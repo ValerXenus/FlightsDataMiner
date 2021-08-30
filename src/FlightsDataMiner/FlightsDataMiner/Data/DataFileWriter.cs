@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using FlightsDataMiner.Common;
-using FlightsDataMiner.Logic;
+using FlightsDataMiner.Base.Common;
+using FlightsDataMiner.Base.Common.Enums;
+using FlightsDataMiner.Base.Helpers;
+using FlightsDataMiner.Base.Objects;
 using FlightsDataMiner.Logic.Logging;
-using FlightsDataMiner.Objects;
 
 namespace FlightsDataMiner.Data
 {

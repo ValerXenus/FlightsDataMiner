@@ -26,7 +26,7 @@ namespace FlightsDataMiner.Logic.Logging
         /// </summary>
         private string LogFilePath
         {
-            get { return Path.Combine(Directory.GetCurrentDirectory(), LogFilename); }
+            get { return Path.Combine(AppContext.BaseDirectory, LogFilename); }
         }
 
         #endregion

@@ -1,4 +1,6 @@
-﻿namespace FlightsDataMiner.Common
+﻿using System;
+
+namespace FlightsDataMiner.Base.Common
 {
     /// <summary>
     /// Класс строковых констант
@@ -18,17 +20,17 @@
         /// <summary>
         /// Ссылка на файл вылетающих рейсов
         /// </summary>
-        public static string DeparturesFile = "DataSet\\Departures.txt";
+        public static string DeparturesFile = string.Concat(AppContext.BaseDirectory, "DataSet\\Departures.txt");
 
         /// <summary>
         /// Ссылка на файл прибывающих рейсов
         /// </summary>
-        public static string ArrivalsFile = "DataSet\\Arrivals.txt";
+        public static string ArrivalsFile = string.Concat(AppContext.BaseDirectory, "DataSet\\Arrivals.txt");
 
         /// <summary>
         /// Ссылка на файла с погодными данными
         /// </summary>
-        public static string MetarsFile = "DataSet\\RawMetars.txt";
+        public static string MetarsFile = string.Concat(AppContext.BaseDirectory, "DataSet\\RawMetars.txt");
 
         /// <summary>
         /// XPath до элементов таблицы "Вылет"

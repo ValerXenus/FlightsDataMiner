@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FlightsDataMiner.Common;
-using FlightsDataMiner.Objects;
+using FlightsDataMiner.Base.Common;
+using FlightsDataMiner.Base.Common.Enums;
+using FlightsDataMiner.Base.Helpers;
+using FlightsDataMiner.Base.Objects;
 using HtmlAgilityPack;
 
 namespace FlightsDataMiner.Logic
