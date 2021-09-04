@@ -9,12 +9,13 @@ namespace FlightsDataMiner
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             Console.WriteLine("Mining data. Please wait...");
 
             Logging.Instance().LogNotification("[Запуск сборщика данных]");
-            getFlightsData(out var departures, out var arrivals);
+            if (!getFlightsData(out var departures, out var arrivals))
+                return exitApp(1);
 
             var metarAccess = new MetarDataAccess();
             var metarData = metarAccess.GetMetarData();
@@ -23,9 +24,9 @@ namespace FlightsDataMiner
             fileWriter.SaveDataSet();
 
             Logging.Instance().LogNotification("[Завершение работы сборщика данных]\n\n");
-            Logging.Unload();
 
             Console.WriteLine("Everything is ok.");
+            return exitApp(0);
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace FlightsDataMiner
         /// </summary>
         /// <param name="departures">Список вылетевших рейсов</param>
         /// <param name="arrivals">Список прилетевших рейсов</param>
-        private static void getFlightsData(out List<FlightInfo> departures, out List<FlightInfo> arrivals)
+        private static bool getFlightsData(out List<FlightInfo> departures, out List<FlightInfo> arrivals)
         {
             var attempts = 0;
             const int maxAttempts = 5;
@@ -47,7 +48,7 @@ namespace FlightsDataMiner
                 if (attempts >= maxAttempts)
                 {
                     Logging.Instance().LogError($"Данные не удалось получить спустя {maxAttempts} попыток");
-                    break;
+                    return false;
                 }
 
                 Logging.Instance().LogNotification($"Попытка получения списка рейсов {attempts++} из {maxAttempts}");
@@ -59,6 +60,19 @@ namespace FlightsDataMiner
                 departures = htmlParser.GetDepartureFlights();
                 arrivals = htmlParser.GetArrivalFlights();
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Метод завершения программы
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <returns></returns>
+        private static int exitApp(int statusCode)
+        {
+            Logging.Unload();
+            return statusCode;
         }
     }
 }
