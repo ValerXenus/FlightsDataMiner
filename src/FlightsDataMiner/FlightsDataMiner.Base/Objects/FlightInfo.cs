@@ -6,32 +6,32 @@ namespace FlightsDataMiner.Base.Objects
     /// <summary>
     /// Класс сведений о полете
     /// </summary>
-    public class FlightInfo
+    public record FlightInfo
     {
         /// <summary>
         /// Номер рейса
         /// </summary>
-        public string FlightNumber { get; set; }
+        public string FlightNumber { get; init; }
 
         /// <summary>
         /// Пункт назначения
         /// </summary>
-        public string Destination { get; set; }
+        public string Destination { get; init; }
 
         /// <summary>
         /// Тип воздушного судна
         /// </summary>
-        public PlaneTypes PlaneType { get; set; }
+        public PlaneTypes PlaneType { get; init; }
 
         /// <summary>
         /// Авиакомпания
         /// </summary>
-        public Airlines Airline { get; set; }
+        public Airlines Airline { get; init; }
 
         /// <summary>
         /// Тип направления (Вылет/Прилет)
         /// </summary>
-        public DirectionType DirectionType { get; set; }
+        public DirectionType DirectionType { get; init; }
 
         /// <summary>
         /// Дата и время (вылета/прибытия) по расписанию
