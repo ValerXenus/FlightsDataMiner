@@ -42,7 +42,9 @@ namespace FlightsDataMiner.Logic
         {
             Logging.Logging.Instance().LogNotification("Запуск парсинга списка ВЫЛЕТАЮЩИХ рейсов");
             var nodes = _htmlDocument.DocumentNode.SelectNodes(StringConstants.DepartureFlightsXPath);
-            return _flightsParser.ParseFlights(nodes, DirectionType.Departure);
+            return nodes == null 
+                ? new List<FlightInfo>() 
+                : _flightsParser.ParseFlights(nodes, DirectionType.Departure);
         }
 
         /// <summary>
@@ -53,7 +55,9 @@ namespace FlightsDataMiner.Logic
         {
             Logging.Logging.Instance().LogNotification("Запуск парсинга списка ПРИЛЕТАЮЩИХ рейсов");
             var nodes = _htmlDocument.DocumentNode.SelectNodes(StringConstants.ArrivalFlightsXPath);
-            return _flightsParser.ParseFlights(nodes, DirectionType.Arrival);
+            return nodes == null
+                ? new List<FlightInfo>()
+                : _flightsParser.ParseFlights(nodes, DirectionType.Arrival);
         }
     }
 }

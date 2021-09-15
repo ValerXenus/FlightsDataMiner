@@ -15,7 +15,7 @@ namespace FlightsDataMiner.Base.Common
         /// <summary>
         /// Ссылка на данные METAR
         /// </summary>
-        public static string MetarDataUrl = "https://api.met.no/weatherapi/tafmetar/1.0/metar.txt?date={request_date}&icao=UWKD";
+        public static string MetarDataUrl = "https://api.met.no/weatherapi/tafmetar/1.0/metar.txt?date={request_date}&offset=+03:00&icao=UWKD";
 
         /// <summary>
         /// Ссылка на файл вылетающих рейсов
@@ -36,13 +36,13 @@ namespace FlightsDataMiner.Base.Common
         /// XPath до элементов таблицы "Вылет"
         /// </summary>
         public static string DepartureFlightsXPath =
-            "//body/div[@class='wrapper']/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='first']/table/tr[@class='vilet_r']";
+            "//body/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='first']/table/tr[@class='vilet_r']";
 
         /// <summary>
         /// XPath до элементов таблицы "Прилет"
         /// </summary>
         public static string ArrivalFlightsXPath =
-            "//body/div[@class='wrapper']/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='second']/table/tr[@class='prilet_r']";
+            "//body/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='second']/table/tr[@class='prilet_r']";
 
         /// <summary>
         /// XPath до поля "Статус рейса"
