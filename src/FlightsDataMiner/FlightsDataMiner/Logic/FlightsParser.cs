@@ -92,7 +92,7 @@ namespace FlightsDataMiner.Logic
                 return false;
 
             var flightDate = parseFlightDate(flightDateText.Trim());
-            var currentDate = DateTime.Now.Date;
+            var currentDate = DateTime.Now.Date.AddDays(-1);
 
             return flightDate == currentDate;
         }
