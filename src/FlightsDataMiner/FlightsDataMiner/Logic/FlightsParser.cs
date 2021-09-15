@@ -92,7 +92,7 @@ namespace FlightsDataMiner.Logic
                 return false;
 
             var flightDate = parseFlightDate(flightDateText.Trim());
-            var currentDate = DateTime.Now.Date.AddDays(-1);
+            var currentDate = DateTime.Now.Date;
 
             return flightDate == currentDate;
         }
@@ -117,11 +117,18 @@ namespace FlightsDataMiner.Logic
         /// <returns></returns>
         private Airlines parseAirline(HtmlNode node)
         {
-            var airlineText = node.SelectSingleNode(StringConstants.AirlineXPath).Attributes["alt"].Value;
-            if (!string.IsNullOrEmpty(airlineText))
-                return EnumTranslator.GetValueFromDescription<Airlines>(airlineText);
+            var airlineInfo = node.SelectSingleNode(StringConstants.AirlineXPath);
+            if (airlineInfo == null)
+            {
+                Logging.Logging.Instance().LogError($"Не удалось получить название авиакомпании {node.InnerText}");
+                return default;
+            }
 
-            Logging.Logging.Instance().LogError($"Авиакомпания {airlineText} не найдена в справочнике");
+            var name = airlineInfo.Attributes["alt"].Value;
+            if (!string.IsNullOrEmpty(name))
+                return EnumTranslator.GetValueFromDescription<Airlines>(name);
+
+            Logging.Logging.Instance().LogError($"Авиакомпания {airlineInfo} не найдена в справочнике");
             return default;
         }
 
