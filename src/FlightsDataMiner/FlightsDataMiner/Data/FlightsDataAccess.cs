@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using FlightsDataMiner.Base.Common;
 using FlightsDataMiner.Logic.Logging;
 
@@ -15,7 +16,7 @@ namespace FlightsDataMiner.Data
         /// <returns></returns>
         public string LoadFlightsHtmlFromFile(FileReadMode mode)
         {
-            var rawDataPath = Path.Combine(Directory.GetCurrentDirectory(), "RawData");
+            var rawDataPath = Path.Combine(AppContext.BaseDirectory, "RawData");
             if (!Directory.Exists(rawDataPath))
             {
                 Logging.Instance().LogError("Папка RawData в папке с утилитой не была найдена");
@@ -26,10 +27,10 @@ namespace FlightsDataMiner.Data
             switch (mode)
             {
                 case FileReadMode.Departures:
-                    flightsFile = Path.Combine(rawDataPath, StringConstants.DeparturesFile);
+                    flightsFile = Path.Combine(rawDataPath, StringConstants.DeparturesFilename);
                     break;
                 case FileReadMode.Arrivals:
-                    flightsFile = Path.Combine(rawDataPath, StringConstants.ArrivalsFile);
+                    flightsFile = Path.Combine(rawDataPath, StringConstants.ArrivalsFilename);
                     break;
                 default:
                     return string.Empty;
