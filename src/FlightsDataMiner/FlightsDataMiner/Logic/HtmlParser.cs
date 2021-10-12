@@ -12,9 +12,14 @@ namespace FlightsDataMiner.Logic
     public class HtmlParser
     {
         /// <summary>
-        /// Поле объекта HTML-документа
+        /// HTML-документ Departures
         /// </summary>
-        private readonly HtmlDocument _htmlDocument;
+        private readonly HtmlDocument _departuresDocument;
+
+        /// <summary>
+        /// HTML-документ Arrivals
+        /// </summary>
+        private readonly HtmlDocument _arrivalsDocument;
 
         /// <summary>
         /// Парсер списка рейсов
@@ -24,12 +29,18 @@ namespace FlightsDataMiner.Logic
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="htmlContent">HTML содержимое в виде строки</param>
-        public HtmlParser(string htmlContent)
+        /// <param name="departuresHtml">HTML содержимое вылетов в виде строки</param>
+        /// <param name="arrivalsHtml">HTML содержимое прилетов в виде строки</param>
+        public HtmlParser(string departuresHtml, string arrivalsHtml)
         {
             Logging.Logging.Instance().LogNotification("Инициализация HTML парсера");
-            _htmlDocument = new HtmlDocument();
-            _htmlDocument.LoadHtml(htmlContent);
+
+            _departuresDocument = new HtmlDocument();
+            _departuresDocument.LoadHtml(departuresHtml);
+
+            _arrivalsDocument = new HtmlDocument();
+            _arrivalsDocument.LoadHtml(arrivalsHtml);
+
             _flightsParser = new FlightsParser();
             Logging.Logging.Instance().LogNotification("HTML парсер успешно инициализирован");
         }
@@ -41,7 +52,7 @@ namespace FlightsDataMiner.Logic
         public List<FlightInfo> GetDepartureFlights()
         {
             Logging.Logging.Instance().LogNotification("Запуск парсинга списка ВЫЛЕТАЮЩИХ рейсов");
-            var nodes = _htmlDocument.DocumentNode.SelectNodes(StringConstants.DepartureFlightsXPath);
+            var nodes = _departuresDocument.DocumentNode.SelectNodes(StringConstants.DepartureFlightsXPath);
             return nodes == null 
                 ? new List<FlightInfo>() 
                 : _flightsParser.ParseFlights(nodes, DirectionType.Departure);
@@ -54,7 +65,7 @@ namespace FlightsDataMiner.Logic
         public List<FlightInfo> GetArrivalFlights()
         {
             Logging.Logging.Instance().LogNotification("Запуск парсинга списка ПРИЛЕТАЮЩИХ рейсов");
-            var nodes = _htmlDocument.DocumentNode.SelectNodes(StringConstants.ArrivalFlightsXPath);
+            var nodes = _arrivalsDocument.DocumentNode.SelectNodes(StringConstants.ArrivalFlightsXPath);
             return nodes == null
                 ? new List<FlightInfo>()
                 : _flightsParser.ParseFlights(nodes, DirectionType.Arrival);

@@ -8,9 +8,14 @@ namespace FlightsDataMiner.Base.Common
     public class StringConstants
     {
         /// <summary>
-        /// Ссылка на страницу с онлайн-табло
+        /// Путь до HTML-файла со списком вылетющих рейсов
         /// </summary>
-        public static string FlightsDashboardUrl = "http://kazan.aero/for-passengers-and-guests/on-line-schedule/";
+        public static string DeparturesFilename = "DeparturesRaw.html";
+
+        /// <summary>
+        /// Путь до HTML-файла со списком прилетющих рейсов
+        /// </summary>
+        public static string ArrivalsFilename = "ArrivalsRaw.html";
 
         /// <summary>
         /// Ссылка на данные METAR
@@ -90,7 +95,7 @@ namespace FlightsDataMiner.Base.Common
         public static string ScheduledArrivalTimeXPath = "td[8]/text()";
 
         /// <summary>
-        /// XPath до поля "Реальное время" (вылетаа)
+        /// XPath до поля "Реальное время" (вылета)
         /// </summary>
         public static string ActualTimeXPath = "td[@class='tot']/text()[2]";
     }

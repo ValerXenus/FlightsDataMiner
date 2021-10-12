@@ -54,8 +54,10 @@ namespace FlightsDataMiner
                 Logging.Instance().LogNotification($"Попытка получения списка рейсов {attempts++} из {maxAttempts}");
 
                 var dataAccess = new FlightsDataAccess();
-                var html = dataAccess.GetDashboardHtml();
-                var htmlParser = new HtmlParser(html);
+
+                var departuresHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Departures);
+                var arrivalsHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Arrivals);
+                var htmlParser = new HtmlParser(departuresHtml, arrivalsHtml);
 
                 departures = htmlParser.GetDepartureFlights();
                 arrivals = htmlParser.GetArrivalFlights();
