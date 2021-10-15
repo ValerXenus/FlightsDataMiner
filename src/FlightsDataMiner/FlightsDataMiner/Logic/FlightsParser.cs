@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using FlightsDataMiner.Base.Common;
 using FlightsDataMiner.Base.Common.Enums;
@@ -22,7 +23,7 @@ namespace FlightsDataMiner.Logic
         /// <param name="nodes">Список HTML-узлов рейсов</param>
         /// <param name="direction">Направление полета (Вылет/Прилет)</param>
         /// <returns></returns>
-        public List<FlightInfo> ParseFlights(HtmlNodeCollection nodes, DirectionType direction)
+        public List<FlightInfo> ParseFlightsRows(HtmlNodeCollection nodes, DirectionType direction)
         {
             return nodes
                 .Select(node => ParseFlight(node, direction))
@@ -38,7 +39,7 @@ namespace FlightsDataMiner.Logic
         /// <returns></returns>
         public FlightInfo ParseFlight(HtmlNode node, DirectionType direction)
         {
-            if (!checkFlightStatus(node) || !checkFlightIsToday(node, direction))
+            if (!checkFlightStatus(node) || !checkFlightIsToday(node))
                 return null;
 
             var outcome = new FlightInfo
@@ -71,8 +72,8 @@ namespace FlightsDataMiner.Logic
             if (string.IsNullOrEmpty(status))
                 return false;
 
-            return status.TrimStart().TrimEnd().ToLower().Equals("вылетел")
-                || status.TrimStart().TrimEnd().ToLower().Equals("прибыл");
+            return status.TrimStart().TrimEnd().ToLower().StartsWith("вылетел")
+                || status.TrimStart().TrimEnd().ToLower().StartsWith("прибыл");
         }
 
         /// <summary>
@@ -80,21 +81,21 @@ namespace FlightsDataMiner.Logic
         /// Отбираем только сегодняшние рейсы
         /// </summary>
         /// <param name="node">HTML-узел рейса</param>
-        /// <param name="direction">Направление</param>
         /// <returns></returns>
-        private bool checkFlightIsToday(HtmlNode node, DirectionType direction)
+        private bool checkFlightIsToday(HtmlNode node)
         {
-            var flightDateXPath = direction == DirectionType.Departure
-                ? StringConstants.DepartureDateXPath
-                : StringConstants.ArrivalDateXPath;
-            var flightDateText = node.SelectSingleNode(flightDateXPath).InnerText;
-            if (string.IsNullOrEmpty(flightDateText))
+            var flightDateInfo = node.SelectSingleNode(StringConstants.FlightDateTimeXPath);
+            var realFlightDateTimeNode = flightDateInfo.SelectSingleNode(StringConstants.RealDateTimeXPath) 
+                                         ?? flightDateInfo.SelectSingleNode(StringConstants.CoincidentDateTimeXPath);
+
+            // If date string still empty
+            if (realFlightDateTimeNode == null)
                 return false;
 
-            var flightDate = parseFlightDate(flightDateText.Trim());
+            var realDate = parseFlightDate(realFlightDateTimeNode.InnerText, false);
             var currentDate = DateTime.Now.Date;
 
-            return flightDate == currentDate;
+            return realDate == currentDate;
         }
 
         /// <summary>
@@ -139,12 +140,15 @@ namespace FlightsDataMiner.Logic
         /// <returns></returns>
         private PlaneTypes parsePlaneType(HtmlNode node)
         {
-            var planeName = node.SelectSingleNode(StringConstants.PlaneNameXPath).InnerText;
-            if (!string.IsNullOrEmpty(planeName))
-                return EnumTranslator.GetValueFromDescription<PlaneTypes>(planeName);
+            // Unfortunately plane type is no longer supported in data
+            return PlaneTypes.None;
 
-            Logging.Logging.Instance().LogError($"Модель самолета {planeName} не найдена в справочнике");
-            return default;
+            //var planeName = node.SelectSingleNode(StringConstants.PlaneNameXPath).InnerText;
+            //if (!string.IsNullOrEmpty(planeName))
+            //    return EnumTranslator.GetValueFromDescription<PlaneTypes>(planeName);
+
+            //Logging.Logging.Instance().LogError($"Модель самолета {planeName} не найдена в справочнике");
+            //return default;
         }
 
         /// <summary>
@@ -226,11 +230,21 @@ namespace FlightsDataMiner.Logic
         /// Парсинг даты вылета/прилета из таблицы
         /// </summary>
         /// <param name="inputDate">Дата в виде строки</param>
+        /// <param name="useDayTime">Признак необходимости парсинга времени</param>
         /// <returns></returns>
-        private DateTime parseFlightDate(string inputDate)
+        private DateTime parseFlightDate(string inputDate, bool useDayTime = true)
         {
-            inputDate += "." + DateTime.Now.Year;
-            if (DateTime.TryParse(inputDate, out var parsedDate)) 
+            inputDate = inputDate.TrimStart().TrimEnd();
+            var datePattern = "dd.MM.yyyy MM:hh";
+
+            if (!useDayTime)
+            {
+                datePattern = "dd.MM.yyyy";
+                inputDate = inputDate.Split(' ')[0];
+            }
+
+            if (DateTime.TryParseExact(inputDate, datePattern, new CultureInfo("ru-RU"),
+                DateTimeStyles.None, out var parsedDate))
                 return parsedDate;
 
             Logging.Logging.Instance().LogError($"Не удалось распарсить дату: {inputDate}");

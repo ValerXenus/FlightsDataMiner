@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FlightsDataMiner.Base.Common.Enums;
 using FlightsDataMiner.Base.Objects;
 using FlightsDataMiner.Data;
 using FlightsDataMiner.Logic;
@@ -11,11 +12,10 @@ namespace FlightsDataMiner
     {
         static int Main(string[] args)
         {
-            Console.WriteLine("Mining data. Please wait...");
+            Console.WriteLine("Started mining data...");
 
             Logging.Instance().LogNotification("[Запуск сборщика данных]");
-            if (!getFlightsData(out var departures, out var arrivals))
-                return exitApp(1);
+            getFlightsData(out var departures, out var arrivals);
 
             var metarAccess = new MetarDataAccess();
             var metarData = metarAccess.GetMetarData();
@@ -35,35 +35,21 @@ namespace FlightsDataMiner
         /// </summary>
         /// <param name="departures">Список вылетевших рейсов</param>
         /// <param name="arrivals">Список прилетевших рейсов</param>
-        private static bool getFlightsData(out List<FlightInfo> departures, out List<FlightInfo> arrivals)
+        private static void getFlightsData(out List<FlightInfo> departures, out List<FlightInfo> arrivals)
         {
             var attempts = 0;
             const int maxAttempts = 5;
 
-            departures = new List<FlightInfo>();
-            arrivals = new List<FlightInfo>();
+            Logging.Instance().LogNotification($"Попытка получения списка рейсов {attempts++} из {maxAttempts}");
 
-            while (departures.Count == 0 || arrivals.Count == 0)
-            {
-                if (attempts >= maxAttempts)
-                {
-                    Logging.Instance().LogError($"Данные не удалось получить спустя {maxAttempts} попыток");
-                    return false;
-                }
+            var dataAccess = new FlightsDataAccess();
 
-                Logging.Instance().LogNotification($"Попытка получения списка рейсов {attempts++} из {maxAttempts}");
+            var departuresHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Departures);
+            var arrivalsHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Arrivals);
+            var htmlParser = new HtmlParser(departuresHtml, arrivalsHtml);
 
-                var dataAccess = new FlightsDataAccess();
-
-                var departuresHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Departures);
-                var arrivalsHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Arrivals);
-                var htmlParser = new HtmlParser(departuresHtml, arrivalsHtml);
-
-                departures = htmlParser.GetDepartureFlights();
-                arrivals = htmlParser.GetArrivalFlights();
-            }
-
-            return true;
+            departures = htmlParser.GetFlights(DirectionType.Departure);
+            arrivals = htmlParser.GetFlights(DirectionType.Arrival);
         }
 
         /// <summary>

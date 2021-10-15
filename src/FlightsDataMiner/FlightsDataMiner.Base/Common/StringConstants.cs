@@ -40,24 +40,18 @@ namespace FlightsDataMiner.Base.Common
         /// <summary>
         /// XPath до элементов таблицы "Вылет"
         /// </summary>
-        public static string DepartureFlightsXPath =
-            "//body/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='first']/table/tr[@class='vilet_r']";
-
-        /// <summary>
-        /// XPath до элементов таблицы "Прилет"
-        /// </summary>
-        public static string ArrivalFlightsXPath =
-            "//body/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='second']/table/tr[@class='prilet_r']";
+        public static string FlightsXPath =
+            "//body/div[@class='cont']/div[2]/div[@class='main-content__template']/div[@class='flights-shedule']/div[@class='shedule__items']/div";
 
         /// <summary>
         /// XPath до поля "Статус рейса"
         /// </summary>
-        public static string FlightStatusXPath = "td[2]";
+        public static string FlightStatusXPath = "div/div/div[@class='shedule__item-cell shedule_status']";
 
         /// <summary>
         /// XPath до поля "Номер рейса"
         /// </summary>
-        public static string FlightNumberXPath = "td[3]";
+        public static string FlightNumberXPath = "div/div/div[@class='shedule__item-cell shedule_number']/div/span";
 
         /// <summary>
         /// XPath до поля "Номер рейса"
@@ -65,14 +59,24 @@ namespace FlightsDataMiner.Base.Common
         public static string AirlineXPath = "td[5]/a[@class='ac_logo']/img";
 
         /// <summary>
-        /// XPath даты вылета
+        /// XPath узла с датами
         /// </summary>
-        public static string DepartureDateXPath = "td[8]";
+        public static string FlightDateTimeXPath = "div/div/div[@class='shedule__item-cell shedule_time']";
 
         /// <summary>
-        /// XPath даты прилета
+        /// XPath даты/времени рейса, совпадающего с расписанием
         /// </summary>
-        public static string ArrivalDateXPath = "td[9]";
+        public static string CoincidentDateTimeXPath = "div[@class='time_currect']";
+
+        /// <summary>
+        /// XPath даты/времени рейса по расписанию
+        /// </summary>
+        public static string ScheduledDateTimeXPath = "div[@class='time_old']";
+
+        /// <summary>
+        /// XPath реального даты/времени рейса
+        /// </summary>
+        public static string RealDateTimeXPath = "div[@class='time_new']";
 
         /// <summary>
         /// XPath до поля "Модели самолета"

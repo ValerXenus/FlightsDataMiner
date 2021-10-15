@@ -46,29 +46,27 @@ namespace FlightsDataMiner.Logic
         }
 
         /// <summary>
-        /// Главный парсер списка "Вылет"
+        /// Главный парсер списка авиарейсов
         /// </summary>
+        /// <param name="directionType">Тип рейса (Departure/Arrival)</param>
         /// <returns></returns>
-        public List<FlightInfo> GetDepartureFlights()
+        public List<FlightInfo> GetFlights(DirectionType directionType)
         {
-            Logging.Logging.Instance().LogNotification("Запуск парсинга списка ВЫЛЕТАЮЩИХ рейсов");
-            var nodes = _departuresDocument.DocumentNode.SelectNodes(StringConstants.DepartureFlightsXPath);
-            return nodes == null 
-                ? new List<FlightInfo>() 
-                : _flightsParser.ParseFlights(nodes, DirectionType.Departure);
-        }
+            // Default direction type - Departure
+            var logWord = "ВЫЛЕТАЮЩИХ";
+            var flightsDocument = _departuresDocument;
 
-        /// <summary>
-        /// Главный парсер списка "Прилет"
-        /// </summary>
-        /// <returns></returns>
-        public List<FlightInfo> GetArrivalFlights()
-        {
-            Logging.Logging.Instance().LogNotification("Запуск парсинга списка ПРИЛЕТАЮЩИХ рейсов");
-            var nodes = _arrivalsDocument.DocumentNode.SelectNodes(StringConstants.ArrivalFlightsXPath);
+            if (directionType == DirectionType.Arrival)
+            {
+                logWord = "ПРИЛЕТАЮЩИХ";
+                flightsDocument = _arrivalsDocument;
+            }
+
+            Logging.Logging.Instance().LogNotification($"Запуск парсинга списка {logWord} рейсов");
+            var nodes = flightsDocument.DocumentNode.SelectNodes(StringConstants.FlightsXPath);
             return nodes == null
                 ? new List<FlightInfo>()
-                : _flightsParser.ParseFlights(nodes, DirectionType.Arrival);
+                : _flightsParser.ParseFlightsRows(nodes, directionType);
         }
     }
 }
