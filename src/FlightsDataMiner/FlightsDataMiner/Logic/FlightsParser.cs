@@ -136,10 +136,14 @@ namespace FlightsDataMiner.Logic
             }
 
             var name = airlineInfo.Attributes["title"].Value;
-            if (!string.IsNullOrEmpty(name))
-                return EnumTranslator.GetValueFromDescription<Airlines>(name.ToUpper());
+            Airlines airline = default;
+            if (!string.IsNullOrEmpty(name)) 
+                airline = EnumTranslator.GetValueFromDescription<Airlines>(name.ToUpper());
 
-            Logging.Logging.Instance().LogError($"Авиакомпания {airlineInfo} не найдена в справочнике");
+            if (airline != default)
+                return airline;
+
+            Logging.Logging.Instance().LogError($"Авиакомпания {airlineInfo.InnerText} не найдена в справочнике");
             return default;
         }
 

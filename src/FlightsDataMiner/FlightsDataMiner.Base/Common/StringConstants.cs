@@ -44,24 +44,34 @@ namespace FlightsDataMiner.Base.Common
             "//body/div[@class='cont']/div[2]/div[@class='main-content__template']/div[@class='flights-shedule']/div[@class='shedule__items']/div";
 
         /// <summary>
+        /// Путь до таблицы с данными о рейсе внутри узла рейсов сайта
+        /// </summary>
+        public static string FlightTableXPath = "div[@class='shedule__item-table']/div/";
+
+        /// <summary>
         /// XPath до поля "Статус рейса"
         /// </summary>
-        public static string FlightStatusXPath = "div/div/div[@class='shedule__item-cell shedule_status']";
+        public static string FlightStatusXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_status']");
 
         /// <summary>
         /// XPath до поля "Номер рейса"
         /// </summary>
-        public static string FlightNumberXPath = "div/div/div[@class='shedule__item-cell shedule_number']/div/span";
+        public static string FlightNumberXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_number']/div/span");
 
         /// <summary>
         /// XPath до поля "Название авиакомпании"
         /// </summary>
-        public static string AirlineXPath = "div/div/div[@class='shedule__item-cell shedule_number']/div";
+        public static string AirlineXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_number']/div");
+
+        /// <summary>
+        /// XPath до поля "Город назначения"
+        /// </summary>
+        public static string DestinationXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_direction']");
 
         /// <summary>
         /// XPath узла с датами
         /// </summary>
-        public static string FlightDateTimeXPath = "div/div/div[@class='shedule__item-cell shedule_time']";
+        public static string FlightDateTimeXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_time']");
 
         /// <summary>
         /// XPath даты/времени рейса, совпадающего с расписанием
@@ -82,25 +92,5 @@ namespace FlightsDataMiner.Base.Common
         // XPath до поля "Модели самолета"
         // </summary>
         //public static string PlaneNameXPath = "td[6]";
-
-        /// <summary>
-        /// XPath до поля "Город назначения"
-        /// </summary>
-        public static string DestinationXPath = "div/div/div[@class='shedule__item-cell shedule_direction']";
-
-        /// <summary>
-        /// XPath до поля "Время по расписанию" (вылета)
-        /// </summary>
-        public static string ScheduledDepartureTimeXPath = "td[7]/text()";
-
-        /// <summary>
-        /// XPath до поля "Время по расписанию" (прилета)
-        /// </summary>
-        public static string ScheduledArrivalTimeXPath = "td[8]/text()";
-
-        /// <summary>
-        /// XPath до поля "Реальное время" (вылета)
-        /// </summary>
-        public static string ActualTimeXPath = "td[@class='tot']/text()[2]";
     }
 }
