@@ -8,9 +8,14 @@ namespace FlightsDataMiner.Base.Common
     public class StringConstants
     {
         /// <summary>
-        /// Ссылка на страницу с онлайн-табло
+        /// Путь до HTML-файла со списком вылетющих рейсов
         /// </summary>
-        public static string FlightsDashboardUrl = "http://kazan.aero/for-passengers-and-guests/on-line-schedule/";
+        public static string DeparturesFilename = "DeparturesRaw.html";
+
+        /// <summary>
+        /// Путь до HTML-файла со списком прилетющих рейсов
+        /// </summary>
+        public static string ArrivalsFilename = "ArrivalsRaw.html";
 
         /// <summary>
         /// Ссылка на данные METAR
@@ -35,63 +40,57 @@ namespace FlightsDataMiner.Base.Common
         /// <summary>
         /// XPath до элементов таблицы "Вылет"
         /// </summary>
-        public static string DepartureFlightsXPath =
-            "//body/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='first']/table/tr[@class='vilet_r']";
+        public static string FlightsXPath =
+            "//body/div[@class='cont']/div[2]/div[@class='main-content__template']/div[@class='flights-shedule']/div[@class='shedule__items']/div";
 
         /// <summary>
-        /// XPath до элементов таблицы "Прилет"
+        /// Путь до таблицы с данными о рейсе внутри узла рейсов сайта
         /// </summary>
-        public static string ArrivalFlightsXPath =
-            "//body/div[@id='content']/div[@id='workarea']/div[@class='tabs']/div[@id='second']/table/tr[@class='prilet_r']";
+        public static string FlightTableXPath = "div[@class='shedule__item-table']/div/";
 
         /// <summary>
         /// XPath до поля "Статус рейса"
         /// </summary>
-        public static string FlightStatusXPath = "td[2]";
+        public static string FlightStatusXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_status']");
 
         /// <summary>
         /// XPath до поля "Номер рейса"
         /// </summary>
-        public static string FlightNumberXPath = "td[3]";
+        public static string FlightNumberXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_number']/div/span");
 
         /// <summary>
-        /// XPath до поля "Номер рейса"
+        /// XPath до поля "Название авиакомпании"
         /// </summary>
-        public static string AirlineXPath = "td[5]/a[@class='ac_logo']/img";
-
-        /// <summary>
-        /// XPath даты вылета
-        /// </summary>
-        public static string DepartureDateXPath = "td[8]";
-
-        /// <summary>
-        /// XPath даты прилета
-        /// </summary>
-        public static string ArrivalDateXPath = "td[9]";
-
-        /// <summary>
-        /// XPath до поля "Модели самолета"
-        /// </summary>
-        public static string PlaneNameXPath = "td[6]";
+        public static string AirlineXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_number']/div");
 
         /// <summary>
         /// XPath до поля "Город назначения"
         /// </summary>
-        public static string DestinationXPath = "td[4]";
+        public static string DestinationXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_direction']");
 
         /// <summary>
-        /// XPath до поля "Время по расписанию" (вылета)
+        /// XPath узла с датами
         /// </summary>
-        public static string ScheduledDepartureTimeXPath = "td[7]/text()";
+        public static string FlightDateTimeXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_time']");
 
         /// <summary>
-        /// XPath до поля "Время по расписанию" (прилета)
+        /// XPath даты/времени рейса, совпадающего с расписанием
         /// </summary>
-        public static string ScheduledArrivalTimeXPath = "td[8]/text()";
+        public static string CoincidentDateTimeXPath = "div[@class='time_currect']";
 
         /// <summary>
-        /// XPath до поля "Реальное время" (вылетаа)
+        /// XPath даты/времени рейса по расписанию
         /// </summary>
-        public static string ActualTimeXPath = "td[@class='tot']/text()[2]";
+        public static string ScheduledDateTimeXPath = "div[@class='time_old']";
+
+        /// <summary>
+        /// XPath реального даты/времени рейса
+        /// </summary>
+        public static string ActualDateTimeXPath = "div[@class='time_new']";
+
+        // <summary>
+        // XPath до поля "Модели самолета"
+        // </summary>
+        //public static string PlaneNameXPath = "td[6]";
     }
 }

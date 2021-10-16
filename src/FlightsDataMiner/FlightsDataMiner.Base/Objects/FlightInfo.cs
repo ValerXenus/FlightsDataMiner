@@ -49,9 +49,12 @@ namespace FlightsDataMiner.Base.Objects
         /// <returns></returns>
         public bool CheckDataValid()
         {
-            return ScheduledDateTime != DateTime.MinValue && ActualDateTime != DateTime.MinValue &&
-                   !string.IsNullOrEmpty(FlightNumber) && !string.IsNullOrEmpty(Destination) &&
-                   Airline != Airlines.None && PlaneType != PlaneTypes.None;
+            var condition = ScheduledDateTime != DateTime.MinValue
+                            && ActualDateTime != DateTime.MinValue
+                            && !string.IsNullOrEmpty(FlightNumber)
+                            && !string.IsNullOrEmpty(Destination)
+                            && Airline != Airlines.None;
+            return condition;
         }
     }
 }

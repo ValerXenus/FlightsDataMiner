@@ -9,21 +9,21 @@ namespace FlightsDataMiner.Base.Common.Enums
     {
         [Description("Неизвестный")]
         None = 0,
-        [Description("ПАО АЭРОФЛОТ")]
+        [Description("АЭРОФЛОТ")]
         Aeroflot = 1,
         [Description("ПОБЕДА")]
         Pobeda = 2,
         [Description("УРАЛЬСКИЕ АВИАЛИНИИ")]
         UralAirlines = 3,
-        [Description("АО АВИАКОМПАНИЯ РОССИЯ")]
+        [Description("АВИАКОМПАНИЯ РОССИЯ")]
         Rossiya = 4,
         [Description("АЗУР ЭЙР")]
         AzurAir = 5,
-        [Description("АО АВИАКОМПАНИЯ СИБИРЬ")]
+        [Description("АВИАКОМПАНИЯ СИБИРЬ")]
         S7 = 6,
         [Description("РОЯЛ ФЛАЙ")]
         RoyalFly = 7,
-        [Description("АО ЮВТ АЭРО")]
+        [Description("ЮВТ АЭРО")]
         UvtAero = 8,
         [Description("АЭРОПОРТ ОРЕНБУРГ")]
         Orenburg = 9,
@@ -33,13 +33,13 @@ namespace FlightsDataMiner.Base.Common.Enums
         Kostroma = 11,
         [Description("СМАРТАВИА")]
         SmartAvia = 12,
-        [Description("ПАО АВИАКОМПАНИЯ ЮТЭЙР")]
+        [Description("АВИАКОМПАНИЯ ЮТЭЙР")]
         UTair = 13,
         [Description("РУСЛАЙН")]
         Rusline = 14,
         [Description("ИКАР")]
         Ikar = 15,
-        [Description("АО АВИАКОМПАНИЯ АЗИМУТ")]
+        [Description("АВИАКОМПАНИЯ АЗИМУТ")]
         Azimut = 16,
         [Description("УЗБЕКИСТОН ХАВО ЙУЛЛАРИ")]
         UzbekistanHavoUllary = 17,
@@ -53,5 +53,9 @@ namespace FlightsDataMiner.Base.Common.Enums
         Yamal = 21,
         [Description("РЕД ВИНГС")]
         RedWings = 22,
+        [Description("БЕЛАВИА")]
+        Belavia = 23,
+        [Description("СОМОН ЭЙР")]
+        SomonAir = 24,
     }
 }

@@ -11,13 +11,14 @@ namespace FlightsDataMiner.Data
     /// </summary>
     public class MetarDataAccess
     {
+        /// <summary>
+        /// Путь URL для получения данных о погоде
+        /// </summary>
         private readonly string _metarUrl;
 
-        public MetarDataAccess()
+        public MetarDataAccess(DateTime currentDate)
         {
-            // Данные по Metar представляются по UTC
-            var nowDateText = DateTime.UtcNow.ToString("yyyy-MM-dd");
-            _metarUrl = StringConstants.MetarDataUrl.Replace("{request_date}", nowDateText);
+            _metarUrl = StringConstants.MetarDataUrl.Replace("{request_date}", currentDate.ToString("yyyy-MM-dd"));
         }
 
         public List<string> GetMetarData()

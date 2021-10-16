@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FlightsDataMiner.Base.Common;
 using FlightsDataMiner.Base.Common.Enums;
 using FlightsDataMiner.Base.Objects;
@@ -12,52 +13,63 @@ namespace FlightsDataMiner.Logic
     public class HtmlParser
     {
         /// <summary>
-        /// Поле объекта HTML-документа
+        /// HTML-документ Departures
         /// </summary>
-        private readonly HtmlDocument _htmlDocument;
+        private readonly HtmlDocument _departuresDocument;
+
+        /// <summary>
+        /// HTML-документ Arrivals
+        /// </summary>
+        private readonly HtmlDocument _arrivalsDocument;
 
         /// <summary>
         /// Парсер списка рейсов
         /// </summary>
         private readonly FlightsParser _flightsParser;
 
+
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="htmlContent">HTML содержимое в виде строки</param>
-        public HtmlParser(string htmlContent)
+        /// <param name="departuresHtml">HTML содержимое вылетов в виде строки</param>
+        /// <param name="arrivalsHtml">HTML содержимое прилетов в виде строки</param>
+        /// <param name="currentDate">Дата, по которой необходимо отбирать авиарейсы</param>
+        public HtmlParser(string departuresHtml, string arrivalsHtml, DateTime currentDate)
         {
             Logging.Logging.Instance().LogNotification("Инициализация HTML парсера");
-            _htmlDocument = new HtmlDocument();
-            _htmlDocument.LoadHtml(htmlContent);
-            _flightsParser = new FlightsParser();
+
+            _departuresDocument = new HtmlDocument();
+            _departuresDocument.LoadHtml(departuresHtml);
+
+            _arrivalsDocument = new HtmlDocument();
+            _arrivalsDocument.LoadHtml(arrivalsHtml);
+
+            _flightsParser = new FlightsParser(currentDate);
             Logging.Logging.Instance().LogNotification("HTML парсер успешно инициализирован");
         }
 
         /// <summary>
-        /// Главный парсер списка "Вылет"
+        /// Главный парсер списка авиарейсов
         /// </summary>
+        /// <param name="directionType">Тип рейса (Departure/Arrival)</param>
         /// <returns></returns>
-        public List<FlightInfo> GetDepartureFlights()
+        public List<FlightInfo> GetFlights(DirectionType directionType)
         {
-            Logging.Logging.Instance().LogNotification("Запуск парсинга списка ВЫЛЕТАЮЩИХ рейсов");
-            var nodes = _htmlDocument.DocumentNode.SelectNodes(StringConstants.DepartureFlightsXPath);
-            return nodes == null 
-                ? new List<FlightInfo>() 
-                : _flightsParser.ParseFlights(nodes, DirectionType.Departure);
-        }
+            // Default direction type - Departure
+            var logWord = "ВЫЛЕТАЮЩИХ";
+            var flightsDocument = _departuresDocument;
 
-        /// <summary>
-        /// Главный парсер списка "Прилет"
-        /// </summary>
-        /// <returns></returns>
-        public List<FlightInfo> GetArrivalFlights()
-        {
-            Logging.Logging.Instance().LogNotification("Запуск парсинга списка ПРИЛЕТАЮЩИХ рейсов");
-            var nodes = _htmlDocument.DocumentNode.SelectNodes(StringConstants.ArrivalFlightsXPath);
+            if (directionType == DirectionType.Arrival)
+            {
+                logWord = "ПРИЛЕТАЮЩИХ";
+                flightsDocument = _arrivalsDocument;
+            }
+
+            Logging.Logging.Instance().LogNotification($"Запуск парсинга списка {logWord} рейсов");
+            var nodes = flightsDocument.DocumentNode.SelectNodes(StringConstants.FlightsXPath);
             return nodes == null
                 ? new List<FlightInfo>()
-                : _flightsParser.ParseFlights(nodes, DirectionType.Arrival);
+                : _flightsParser.ParseFlightsRows(nodes, directionType);
         }
     }
 }
