@@ -54,9 +54,9 @@ namespace FlightsDataMiner.Base.Common
         public static string FlightNumberXPath = "div/div/div[@class='shedule__item-cell shedule_number']/div/span";
 
         /// <summary>
-        /// XPath до поля "Номер рейса"
+        /// XPath до поля "Название авиакомпании"
         /// </summary>
-        public static string AirlineXPath = "td[5]/a[@class='ac_logo']/img";
+        public static string AirlineXPath = "div/div/div[@class='shedule__item-cell shedule_number']/div";
 
         /// <summary>
         /// XPath узла с датами
@@ -76,17 +76,17 @@ namespace FlightsDataMiner.Base.Common
         /// <summary>
         /// XPath реального даты/времени рейса
         /// </summary>
-        public static string RealDateTimeXPath = "div[@class='time_new']";
+        public static string ActualDateTimeXPath = "div[@class='time_new']";
 
-        /// <summary>
-        /// XPath до поля "Модели самолета"
-        /// </summary>
-        public static string PlaneNameXPath = "td[6]";
+        // <summary>
+        // XPath до поля "Модели самолета"
+        // </summary>
+        //public static string PlaneNameXPath = "td[6]";
 
         /// <summary>
         /// XPath до поля "Город назначения"
         /// </summary>
-        public static string DestinationXPath = "td[4]";
+        public static string DestinationXPath = "div/div/div[@class='shedule__item-cell shedule_direction']";
 
         /// <summary>
         /// XPath до поля "Время по расписанию" (вылета)

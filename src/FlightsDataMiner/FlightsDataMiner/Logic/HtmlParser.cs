@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FlightsDataMiner.Base.Common;
 using FlightsDataMiner.Base.Common.Enums;
 using FlightsDataMiner.Base.Objects;
@@ -26,12 +27,14 @@ namespace FlightsDataMiner.Logic
         /// </summary>
         private readonly FlightsParser _flightsParser;
 
+
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="departuresHtml">HTML содержимое вылетов в виде строки</param>
         /// <param name="arrivalsHtml">HTML содержимое прилетов в виде строки</param>
-        public HtmlParser(string departuresHtml, string arrivalsHtml)
+        /// <param name="currentDate">Дата, по которой необходимо отбирать авиарейсы</param>
+        public HtmlParser(string departuresHtml, string arrivalsHtml, DateTime currentDate)
         {
             Logging.Logging.Instance().LogNotification("Инициализация HTML парсера");
 
@@ -41,7 +44,7 @@ namespace FlightsDataMiner.Logic
             _arrivalsDocument = new HtmlDocument();
             _arrivalsDocument.LoadHtml(arrivalsHtml);
 
-            _flightsParser = new FlightsParser();
+            _flightsParser = new FlightsParser(currentDate);
             Logging.Logging.Instance().LogNotification("HTML парсер успешно инициализирован");
         }
 

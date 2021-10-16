@@ -15,6 +15,16 @@ namespace FlightsDataMiner.Logic
     /// </summary>
     public class FlightsParser
     {
+        /// <summary>
+        /// Дата, по которой необходимо отбирать авиарейсы
+        /// </summary>
+        private readonly DateTime _currentDate;
+
+        public FlightsParser(DateTime currentDate)
+        {
+            _currentDate = currentDate;
+        }
+
         #region Public methods
 
         /// <summary>
@@ -48,9 +58,9 @@ namespace FlightsDataMiner.Logic
                 FlightNumber = parseFlightNumber(node),
                 Airline = parseAirline(node),
                 PlaneType = parsePlaneType(node),
-                Destination = parseDestination(node),
-                ScheduledDateTime = parseScheduledDateTime(node, direction),
-                ActualDateTime = parseActualDateTime(node)
+                Destination = parseCityName(node),
+                ScheduledDateTime = parseScheduledDateTime(node, TimeType.Scheduled),
+                ActualDateTime = parseScheduledDateTime(node, TimeType.Actual)
             };
 
             return outcome.CheckDataValid() ? outcome : null;
@@ -85,7 +95,7 @@ namespace FlightsDataMiner.Logic
         private bool checkFlightIsToday(HtmlNode node)
         {
             var flightDateInfo = node.SelectSingleNode(StringConstants.FlightDateTimeXPath);
-            var realFlightDateTimeNode = flightDateInfo.SelectSingleNode(StringConstants.RealDateTimeXPath) 
+            var realFlightDateTimeNode = flightDateInfo.SelectSingleNode(StringConstants.ActualDateTimeXPath) 
                                          ?? flightDateInfo.SelectSingleNode(StringConstants.CoincidentDateTimeXPath);
 
             // If date string still empty
@@ -93,7 +103,7 @@ namespace FlightsDataMiner.Logic
                 return false;
 
             var realDate = parseFlightDate(realFlightDateTimeNode.InnerText, false);
-            var currentDate = DateTime.Now.Date;
+            var currentDate = _currentDate;
 
             return realDate == currentDate;
         }
@@ -125,9 +135,9 @@ namespace FlightsDataMiner.Logic
                 return default;
             }
 
-            var name = airlineInfo.Attributes["alt"].Value;
+            var name = airlineInfo.Attributes["title"].Value;
             if (!string.IsNullOrEmpty(name))
-                return EnumTranslator.GetValueFromDescription<Airlines>(name);
+                return EnumTranslator.GetValueFromDescription<Airlines>(name.ToUpper());
 
             Logging.Logging.Instance().LogError($"Авиакомпания {airlineInfo} не найдена в справочнике");
             return default;
@@ -156,7 +166,7 @@ namespace FlightsDataMiner.Logic
         /// </summary>
         /// <param name="node">HTML-узел рейса</param>
         /// <returns></returns>
-        private string parseDestination(HtmlNode node)
+        private string parseCityName(HtmlNode node)
         {
             var destinationName = node.SelectSingleNode(StringConstants.DestinationXPath).InnerText;
             return string.IsNullOrEmpty(destinationName)
@@ -168,62 +178,27 @@ namespace FlightsDataMiner.Logic
         /// Парсинг даты и времени (вылета/прибытия) по расписанию
         /// </summary>
         /// <param name="node">HTML-узел рейса</param>
-        /// <param name="direction">Направление</param>
+        /// <param name="timeType">Тип получаемого времени</param>
         /// <returns></returns>
-        private DateTime parseScheduledDateTime(HtmlNode node, DirectionType direction)
+        private DateTime parseScheduledDateTime(HtmlNode node, TimeType timeType)
         {
-            var timeXPath = direction == DirectionType.Departure
-                ? StringConstants.ScheduledDepartureTimeXPath
-                : StringConstants.ScheduledArrivalTimeXPath;
-            var time = node.SelectSingleNode(timeXPath).InnerText;
+            var flightDateInfo = node.SelectSingleNode(StringConstants.FlightDateTimeXPath);
 
-            return string.IsNullOrEmpty(time)
-                ? DateTime.MinValue
-                : parseTime(time.TrimStart().TrimEnd());
-        }
+            // Актуальная дата/время - значение по умолчанию
+            var dateTimeXPath = StringConstants.ActualDateTimeXPath;
+            if (timeType == TimeType.Scheduled)
+                dateTimeXPath = StringConstants.ScheduledDateTimeXPath;
 
-        /// <summary>
-        /// Парсинг даты и времени (вылета/прибытия) реального
-        /// </summary>
-        /// <param name="node">HTML-узел рейса</param>
-        /// <returns></returns>
-        private DateTime parseActualDateTime(HtmlNode node)
-        {
-            var time = node.SelectSingleNode(StringConstants.ActualTimeXPath).InnerText;
-            return string.IsNullOrEmpty(time)
-                ? DateTime.MinValue
-                : parseTime(time.TrimStart().TrimEnd());
-        }
-
-        /// <summary>
-        /// Конвертация текстового времени в DateTime
-        /// </summary>
-        /// <param name="inputTime">Текстовое время</param>
-        /// <returns></returns>
-        private DateTime parseTime(string inputTime)
-        {
-            if (inputTime.Length > 5)
-            {
-                Logging.Logging.Instance().LogNotification($"Парсинг даты и времени прилета: {inputTime}");
-                if (!DateTime.TryParse(inputTime, out var outcome))
-                    return DateTime.MinValue;
-
-                Logging.Logging.Instance().LogNotification("Парсинг даты и времени прилета успешно завершен");
-                return outcome;
-            }
-
-            var timeValues = inputTime.Split(":");
-            if (!int.TryParse(timeValues[0], out var hour) || !int.TryParse(timeValues[1], out var minute))
-            {
-                Logging.Logging.Instance().LogError($"Не удалось распарсить время '{inputTime}'");
+            var time = flightDateInfo.SelectSingleNode(dateTimeXPath) 
+                       ?? flightDateInfo.SelectSingleNode(StringConstants.CoincidentDateTimeXPath);
+            if (time == null)
                 return DateTime.MinValue;
-            }
 
-            return new DateTime(
-                DateTime.Now.Year,
-                DateTime.Now.Month,
-                DateTime.Now.Day,
-                hour, minute, 0);
+            var flightDateTime = time.InnerText;
+
+            return string.IsNullOrEmpty(flightDateTime)
+                ? DateTime.MinValue
+                : parseFlightDate(flightDateTime);
         }
 
         /// <summary>
@@ -235,7 +210,7 @@ namespace FlightsDataMiner.Logic
         private DateTime parseFlightDate(string inputDate, bool useDayTime = true)
         {
             inputDate = inputDate.TrimStart().TrimEnd();
-            var datePattern = "dd.MM.yyyy MM:hh";
+            var datePattern = "dd.MM.yyyy HH:mm";
 
             if (!useDayTime)
             {
