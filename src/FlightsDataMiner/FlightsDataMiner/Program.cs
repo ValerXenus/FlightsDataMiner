@@ -20,12 +20,12 @@ namespace FlightsDataMiner
         {
             Console.WriteLine("Started mining data...");
 
-            var currentDate = getCurrentDate(args);
+            var settings = new AppSettings(args);
 
             Logging.Instance().LogNotification("[Запуск сборщика данных]");
-            getFlightsData(out var departures, out var arrivals, currentDate);
+            getFlightsData(out var departures, out var arrivals, settings);
 
-            var metarAccess = new MetarDataAccess(currentDate);
+            var metarAccess = new MetarDataAccess(settings);
             var metarData = metarAccess.GetMetarData();
 
             var fileWriter = new DataFileWriter(departures, arrivals, metarData);
@@ -38,39 +38,19 @@ namespace FlightsDataMiner
         }
 
         /// <summary>
-        /// Получить текущую дату
-        /// </summary>
-        /// <param name="args">Агрументы из Main</param>
-        /// <returns></returns>
-        private static DateTime getCurrentDate(string[] args)
-        {
-            if (args.Length == 0)
-                return DateTime.Now.Date;
-
-            if (DateTime.TryParseExact(args[0], "dd.MM.yyyy", new CultureInfo("ru-RU"), DateTimeStyles.None,
-                out var parseDate)) 
-                return parseDate;
-
-            Logging.Instance()
-                .LogWarning($"Не удалось распарсить текущую дату \"{args[0]}\". В качесве текущей установлена дата: \"{DateTime.Now.Date:MM.dd.yyyy}\".");
-            return DateTime.Now.Date;
-
-        }
-
-        /// <summary>
         /// Попытки получения данных о рейсах
         /// Всего попыток = 5
         /// </summary>
         /// <param name="departures">Список вылетевших рейсов</param>
         /// <param name="arrivals">Список прилетевших рейсов</param>
-        /// <param name="currentDate">Дата, по которой необходимо отбирать авиарейсы</param>
-        private static void getFlightsData(out List<FlightInfo> departures, out List<FlightInfo> arrivals, DateTime currentDate)
+        /// <param name="settings">Настройки программы</param>
+        private static void getFlightsData(out List<FlightInfo> departures, out List<FlightInfo> arrivals, AppSettings settings)
         {
-            var dataAccess = new FlightsDataAccess();
+            var dataAccess = new FlightsDataAccess(settings);
 
-            var departuresHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Departures);
-            var arrivalsHtml = dataAccess.LoadFlightsHtmlFromFile(FileReadMode.Arrivals);
-            var htmlParser = new HtmlParser(departuresHtml, arrivalsHtml, currentDate);
+            var departuresHtml = dataAccess.LoadFlightsHtml(FlightsReadMode.Departures);
+            var arrivalsHtml = dataAccess.LoadFlightsHtml(FlightsReadMode.Arrivals);
+            var htmlParser = new HtmlParser(departuresHtml, arrivalsHtml, settings);
 
             departures = htmlParser.GetFlights(DirectionType.Departure);
             arrivals = htmlParser.GetFlights(DirectionType.Arrival);

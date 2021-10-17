@@ -20,9 +20,9 @@ namespace FlightsDataMiner.Logic
         /// </summary>
         private readonly DateTime _currentDate;
 
-        public FlightsParser(DateTime currentDate)
+        public FlightsParser(AppSettings settings)
         {
-            _currentDate = currentDate;
+            _currentDate = settings.CurrentDate;
         }
 
         #region Public methods

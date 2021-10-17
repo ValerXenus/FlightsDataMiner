@@ -23,6 +23,16 @@ namespace FlightsDataMiner.Base.Common
         public static string MetarDataUrl = "https://api.met.no/weatherapi/tafmetar/1.0/metar.txt?date={request_date}&offset=+03:00&icao=UWKD";
 
         /// <summary>
+        /// Ссылка на страницу со списком вылетающих рейсов
+        /// </summary>
+        public static string DeparturesUrl = "https://kazan.aero/on-line-schedule/";
+
+        /// <summary>
+        /// Ссылка на страницу со списком прилетающих рейсов
+        /// </summary>
+        public static string ArrivalsUrl = "https://kazan.aero/on-line-schedule/arrival/";
+
+        /// <summary>
         /// Ссылка на файл вылетающих рейсов
         /// </summary>
         public static string DeparturesFile = string.Concat(AppContext.BaseDirectory, "DataSet\\Departures.txt");
