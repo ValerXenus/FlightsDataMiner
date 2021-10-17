@@ -1,0 +1,4 @@
+var selector = document.getElementsByClassName("resizeselect");
+var event = new Event("change");
+selector[1].value = 1;
+selector[1].dispatchEvent(event);

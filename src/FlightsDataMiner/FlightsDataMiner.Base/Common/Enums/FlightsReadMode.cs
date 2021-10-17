@@ -1,9 +1,9 @@
-﻿namespace FlightsDataMiner.Data
+﻿namespace FlightsDataMiner.Base.Common.Enums
 {
     /// <summary>
-    /// Режим чтения файла
+    /// Режим чтения авиарейсов
     /// </summary>
-    public enum FileReadMode
+    public enum FlightsReadMode
     {
         /// <summary>
         /// Не определен

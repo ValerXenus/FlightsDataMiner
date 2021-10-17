@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FlightsDataMiner.Base.Common;
+using FlightsDataMiner.Logic;
 using FlightsDataMiner.Logic.Logging;
 
 namespace FlightsDataMiner.Data
@@ -16,9 +16,9 @@ namespace FlightsDataMiner.Data
         /// </summary>
         private readonly string _metarUrl;
 
-        public MetarDataAccess(DateTime currentDate)
+        public MetarDataAccess(AppSettings settings)
         {
-            _metarUrl = StringConstants.MetarDataUrl.Replace("{request_date}", currentDate.ToString("yyyy-MM-dd"));
+            _metarUrl = StringConstants.MetarDataUrl.Replace("{request_date}", settings.CurrentDate.ToString("yyyy-MM-dd"));
         }
 
         public List<string> GetMetarData()

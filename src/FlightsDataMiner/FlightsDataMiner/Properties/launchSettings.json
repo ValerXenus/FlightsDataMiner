@@ -2,7 +2,7 @@
   "profiles": {
     "FlightsDataMiner": {
       "commandName": "Project",
-      "commandLineArgs": "12.10.2021"
+      "commandLineArgs": ""
     }
   }
 }
