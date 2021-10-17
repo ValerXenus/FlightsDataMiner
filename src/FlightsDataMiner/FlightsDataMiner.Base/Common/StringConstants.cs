@@ -64,6 +64,11 @@ namespace FlightsDataMiner.Base.Common
         public static string FlightStatusXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_status']");
 
         /// <summary>
+        /// XPath до поля "Статус рейса" выделенный как предупреждение
+        /// </summary>
+        public static string FlightStatusWarningXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_status red_text']");
+
+        /// <summary>
         /// XPath до поля "Номер рейса"
         /// </summary>
         public static string FlightNumberXPath = string.Concat(FlightTableXPath, "div[@class='shedule__item-cell shedule_number']/div/span");

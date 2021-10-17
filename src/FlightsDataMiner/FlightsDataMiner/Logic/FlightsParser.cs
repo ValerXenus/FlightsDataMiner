@@ -78,7 +78,15 @@ namespace FlightsDataMiner.Logic
         /// <returns></returns>
         private bool checkFlightStatus(HtmlNode node)
         {
-            var status = node.SelectSingleNode(StringConstants.FlightStatusXPath).InnerText;
+            var statusNode = node.SelectSingleNode(StringConstants.FlightStatusXPath)
+                ?? node.SelectSingleNode(StringConstants.FlightStatusWarningXPath);
+            if (statusNode == null)
+            {
+                Logging.Logging.Instance().LogError($"Узел статуса оказался пустым. Узел рейса: {node.InnerHtml}");
+                return false;
+            }
+
+            var status = statusNode.InnerText;
             if (string.IsNullOrEmpty(status))
                 return false;
 
