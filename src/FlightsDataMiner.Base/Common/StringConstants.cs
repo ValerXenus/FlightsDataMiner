@@ -103,6 +103,11 @@ namespace FlightsDataMiner.Base.Common
         /// </summary>
         public static string ActualDateTimeXPath = "div[@class='time_new']";
 
+        /// <summary>
+        /// XPath реального даты/времени рейса (Опаздывающего надолго)
+        /// </summary>
+        public static string ActualDateTimeLateXPath = "div[@class='time_new red_text']";
+
         // <summary>
         // XPath до поля "Модели самолета"
         // </summary>

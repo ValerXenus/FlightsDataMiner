@@ -104,6 +104,7 @@ namespace FlightsDataMiner.Logic
         {
             var flightDateInfo = node.SelectSingleNode(StringConstants.FlightDateTimeXPath);
             var realFlightDateTimeNode = flightDateInfo.SelectSingleNode(StringConstants.ActualDateTimeXPath) 
+                                         ?? flightDateInfo.SelectSingleNode(StringConstants.ActualDateTimeLateXPath)
                                          ?? flightDateInfo.SelectSingleNode(StringConstants.CoincidentDateTimeXPath);
 
             // If date string still empty
@@ -196,13 +197,15 @@ namespace FlightsDataMiner.Logic
         {
             var flightDateInfo = node.SelectSingleNode(StringConstants.FlightDateTimeXPath);
 
-            // Актуальная дата/время - значение по умолчанию
-            var dateTimeXPath = StringConstants.ActualDateTimeXPath;
-            if (timeType == TimeType.Scheduled)
-                dateTimeXPath = StringConstants.ScheduledDateTimeXPath;
-
-            var time = flightDateInfo.SelectSingleNode(dateTimeXPath) 
+            HtmlNode time;
+            if (timeType == TimeType.Actual)
+                time = flightDateInfo.SelectSingleNode(StringConstants.ActualDateTimeXPath)
+                    ?? flightDateInfo.SelectSingleNode(StringConstants.ActualDateTimeLateXPath)
+                    ?? flightDateInfo.SelectSingleNode(StringConstants.CoincidentDateTimeXPath);
+            else
+                time = flightDateInfo.SelectSingleNode(StringConstants.ScheduledDateTimeXPath)
                        ?? flightDateInfo.SelectSingleNode(StringConstants.CoincidentDateTimeXPath);
+
             if (time == null)
                 return DateTime.MinValue;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using FlightsDataMiner.Base.Common.Enums;
 using FlightsDataMiner.Base.Objects;
 using FlightsDataMiner.Data;
